@@ -55,15 +55,15 @@ PKG_PATCHES=(
 		    echo "mingw-w64/bceadc54d8f32b3f14c69074892e2718eac08e3b.patch"
 		}
 	)
-	$( [[ $RUNTIME_MAJOR_VERSION -ge 11 ]] && {
-		echo "mingw-w64/9001-crt-Mark-atexit-as-DATA-because-it-s-always-overridd.patch"
-		[[ $RUNTIME_MAJOR_VERSION -ge 12 ]] && {
-			echo "mingw-w64/9002-crt-Provide-wrappers-for-exit-in-libmingwex.patch"
-		} || {
-			echo "mingw-w64/9002-v11-crt-Provide-wrappers-for-exit-in-libmingwex.patch"
-		}
-		echo "mingw-w64/9003-crt-Implement-standard-conforming-termination-suppor.patch"
-	})
+# 	$( [[ $RUNTIME_MAJOR_VERSION -ge 11 ]] && {
+# 		echo "mingw-w64/9001-crt-Mark-atexit-as-DATA-because-it-s-always-overridd.patch"
+# 		[[ $RUNTIME_MAJOR_VERSION -ge 12 ]] && {
+# 			echo "mingw-w64/9002-crt-Provide-wrappers-for-exit-in-libmingwex.patch"
+# 		} || {
+# 			echo "mingw-w64/9002-v11-crt-Provide-wrappers-for-exit-in-libmingwex.patch"
+# 		}
+# 		echo "mingw-w64/9003-crt-Implement-standard-conforming-termination-suppor.patch"
+# 	})
 )
 
 #
