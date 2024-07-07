@@ -702,8 +702,18 @@ function func_configure {
 		} || {
 			local _rel_dir=$( func_absolute_to_relative $5/$_subbuilddir $SRCS_DIR/$_subsrcdir )
 		}
-		eval $PKG_CONFIGURE_PROG $_rel_dir/$PKG_CONFIGURE_SCRIPT "${3}" > $4 2>&1
-		_result=$?
+		[[ $PKG_CONFIGURE_SCRIPT == NO_CONFIGURE_SCRIPT ]] && {
+			pushd $_rel_dir
+# 			eval $PKG_CONFIGURE_PROG "${3}" > $4 2>&1
+			pwd
+			ls -la
+			eval $PKG_CONFIGURE_PROG "${3}"
+			_result=$?
+			popd > /dev/null
+		} || {
+			eval $PKG_CONFIGURE_PROG $_rel_dir/$PKG_CONFIGURE_SCRIPT "${3}" > $4 2>&1
+			_result=$?
+		}
 		popd > /dev/null
 		[[ $_result == 0 ]] && {
 			echo " done"
@@ -740,7 +750,10 @@ function func_make {
 	[[ ! -f $_marker ]] && {
 		echo -n "--> $5"
 		pushd $7/$_subdir > /dev/null
-		eval ${3} > $4 2>&1
+# 		eval ${3} > $4 2>&1
+		pwd
+		ls -la
+		eval ${3} > $4
 		_result=$?
 		popd > /dev/null
 		[[ $_result == 0 ]] && {

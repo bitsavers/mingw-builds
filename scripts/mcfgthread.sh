@@ -35,7 +35,7 @@
 
 # **************************************************************************
 
-PKG_VERSION=1.6
+PKG_VERSION=1.8
 PKG_NAME=$PKG_ARCHITECTURE-mcfgthread-${PKG_VERSION}
 PKG_DIR_NAME=mcfgthread-${PKG_VERSION}
 PKG_TYPE=git
@@ -48,7 +48,7 @@ PKG_PRIORITY=prereq
 #
 
 PKG_EXECUTE_AFTER_UNCOMPRESS=(
-	"git reset --hard c4f164cac9d6022ae327b31147106d8ff9c27ac2" # Reset to this commit hash for reproducible builds
+	"git reset --hard 6d5e63b58dc0ddacdce22de0a1575f99c24d8374" # Reset to this commit hash for reproducible builds
 )
 
 #
@@ -57,44 +57,108 @@ PKG_PATCHES=()
 
 #
 
-PKG_EXECUTE_AFTER_PATCH=(
-	"autoreconf -i"
-)
+PKG_CONFIGURE_PROG=/mingw64/bin/meson.exe
+PKG_CONFIGURE_SCRIPT=(NO_CONFIGURE_SCRIPT)
+PKG_MAKE_PROG=/mingw64/bin/meson.exe
 
 #
 
+# https://mesonbuild.com/Builtin-options.html#details-for-buildtype
 PKG_CONFIGURE_FLAGS=(
-	--host=$HOST
-	--build=$BUILD
-	--target=$TARGET
+	setup
+	$PREREQ_BUILD_DIR/$PKG_NAME
+	--buildtype=release
+# 	--host=$HOST
+# 	--build=$BUILD
+# 	--target=$TARGET
 	#
 	--prefix=$PREREQ_DIR/$PKG_ARCHITECTURE-mcfgthread
 	#
-	CFLAGS="\"$COMMON_CFLAGS\""
-	CXXFLAGS="\"$COMMON_CXXFLAGS\""
-	CPPFLAGS="\"$COMMON_CPPFLAGS\""
-	LDFLAGS="\"$COMMON_LDFLAGS\""
+# 	CFLAGS="-Os -g \"$COMMON_CFLAGS\""
+# 	CXXFLAGS="\"$COMMON_CXXFLAGS\""
+# 	CPPFLAGS="\"$COMMON_CPPFLAGS\""
+# 	LDFLAGS="\"$COMMON_LDFLAGS\""
 )
 
-#
+
 
 PKG_MAKE_FLAGS=(
-	-j$JOBS
-	all
+	compile -C $PREREQ_BUILD_DIR/$PKG_NAME
 )
 
 #
 
-PKG_TESTSUITE_FLAGS=(
-	-j$JOBS
-	check
-)
+# PKG_TESTSUITE_FLAGS=(
+# # 	cd $PREREQ_DIR/$PKG_ARCHITECTURE-mcfgthread
+# 	test -C $PREREQ_BUILD_DIR/$PKG_NAME
+# )
 
 #
 
 PKG_INSTALL_FLAGS=(
-	-j$JOBS
-	$( [[ $STRIP_ON_INSTALL == yes ]] && echo install-strip || echo install )
+	$( [[ $STRIP_ON_INSTALL == yes ]] && echo "install -C $PREREQ_BUILD_DIR/$PKG_NAME --strip" || echo "install -C $PREREQ_BUILD_DIR/$PKG_NAME" )
 )
+
+# PKG_VERSION=1.6
+# PKG_NAME=$PKG_ARCHITECTURE-mcfgthread-${PKG_VERSION}
+# PKG_DIR_NAME=mcfgthread-${PKG_VERSION}
+# PKG_TYPE=git
+# PKG_URLS=(
+# 	"https://github.com/lhmouse/mcfgthread.git|branch:releases/v$PKG_VERSION|repo:$PKG_TYPE|module:$PKG_DIR_NAME"
+# )
+#
+# PKG_PRIORITY=prereq
+#
+# #
+#
+# PKG_EXECUTE_AFTER_UNCOMPRESS=(
+# 	"git reset --hard c4f164cac9d6022ae327b31147106d8ff9c27ac2" # Reset to this commit hash for reproducible builds
+# )
+#
+# #
+#
+# PKG_PATCHES=()
+#
+# #
+#
+# PKG_EXECUTE_AFTER_PATCH=(
+# 	"autoreconf -i"
+# )
+#
+# #
+#
+# PKG_CONFIGURE_FLAGS=(
+# 	--host=$HOST
+# 	--build=$BUILD
+# 	--target=$TARGET
+# 	#
+# 	--prefix=$PREREQ_DIR/$PKG_ARCHITECTURE-mcfgthread
+# 	#
+# 	CFLAGS="\"$COMMON_CFLAGS\""
+# 	CXXFLAGS="\"$COMMON_CXXFLAGS\""
+# 	CPPFLAGS="\"$COMMON_CPPFLAGS\""
+# 	LDFLAGS="\"$COMMON_LDFLAGS\""
+# )
+#
+# #
+#
+# PKG_MAKE_FLAGS=(
+# 	-j$JOBS
+# 	all
+# )
+#
+# #
+#
+# PKG_TESTSUITE_FLAGS=(
+# 	-j$JOBS
+# 	check
+# )
+#
+# #
+#
+# PKG_INSTALL_FLAGS=(
+# 	-j$JOBS
+# 	$( [[ $STRIP_ON_INSTALL == yes ]] && echo install-strip || echo install )
+# )
 
 # **************************************************************************
