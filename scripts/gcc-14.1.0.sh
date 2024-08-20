@@ -93,6 +93,7 @@ PKG_CONFIGURE_FLAGS=(
 	)
 	--enable-libgomp
 	--enable-libatomic
+	--enable-__cxa_atexit
 	$( [[ "$MSVCRT_PHOBOS_OK" == yes && "$D_LANG_ENABLED" == yes ]] \
 		&& echo "--enable-libphobos"
 	)
